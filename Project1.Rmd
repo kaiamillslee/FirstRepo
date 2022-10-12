@@ -77,3 +77,4 @@ While the design and structure of the wind turbine itself are of extreme importa
 #### **References**
 - [United States Wind Turbine Database (USGS)](https://www.sciencebase.gov/catalog/item/57bdfd8fe4b03fd6b7df5ff9)
 - [Wind Turbines CSV File - CORGIS Dataset Project](https://think.cs.vt.edu/corgis/csv/wind_turbines/)
+- I really love your references. I love your passion for windmills.
