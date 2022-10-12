@@ -1,6 +1,6 @@
 ---
 title: "Wind Turbine Capacity Across the US"
-author: "Kaia Mills-Lee"
+author: "Kaia Mills-Lee is so cool"
 date: "`r Sys.Date()`"
 output: 
   html_document: 
