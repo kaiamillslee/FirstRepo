@@ -1,0 +1,79 @@
+---
+title: "Wind Turbine Capacity Across the US"
+author: "Kaia Mills-Lee"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+  pdf_document: default
+  word_document: default
+---
+
+```{r global_options, echo=FALSE}
+knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=60))
+library(ggplot2)
+turbines <- read.csv('Project1_wind_turbines (1).csv')
+```
+
+# **The Data Set**
+
+The _wind_turbines.csv_ data set was gathered from six different sources and combined into a single data set. It includes data on utility-scale wind turbines (turbines that generate power to supply energy to various utilities) from all across the United States as shown in the image below. It was collected via visual interpretation using advanced aerial technology, and an error of +/- 10 meters was always accounted for based on the make and model of the turbine. The data represented in the _wind_turbines.csv_ data set was gathered quarterly and helped identify turbines that were no longer functioning properly. The data set itself provides the location of each turbine and site, and also represents several variables that could provide information on the functionality of the turbine. These variables include the capacity of the turbine (KW) and capacity of the project (MW), dimensions of the turbine including the height of the hub, diameter of the rotor, area swept during each rotation, and the overall height of the turbine, and details of the project the turbine was in including the number of turbines and site latitude and longitude. 
+
+<center>
+
+![Turbine Project Locations Across the US (USGS)](windSbGraphic (3).jpg){width=60%}
+
+</center>
+
+For the purposes of this analysis of the _wind_turbines.csv_ data set, the outcome variable is going to be the capacity of the turbine (electrical output divided by its maximum power production) measured in kilo-watts (KW). The three predictor variable that we will be measuring against the turbine capacity are the height of the hub (m), diameter of the rotor (m), and the total area swept during a rotation (m<sup>2</sup>).
+
+# **Outcome Variable**
+
+For the purpose of analyzing the _wind_turbines.csv_ data set, __Turbine Capacity__ will act as our outcome variable. To understand more about this variable individually, we can create a histogram of its distribution as shown below. From the histogram, we can see that the turbine capacity distribution is roughly symmetrical (even though it also appears to be bimodal). Therefore, the mean of the variable is `r round(mean(turbines$Turbine.Capacity),2)`MW and the standard deviation of turbine capacity is `r round(sd(turbines$Turbine.Capacity),2)`MW. 
+
+```{r, echo=FALSE}
+ggplot(turbines) + geom_histogram(aes(x=Turbine.Capacity), col='black', fill='deepskyblue3', binwidth=200)  + labs(title='Turbine Capacity Distribution',x='Turbine Capacity (KW)',y='Frequency')
+```
+
+# **Predictor Variables**
+
+When attempting to further understand our outcome variable Turbine Capacity, we can investigate potential relationships it has with other variables, specifically our designated predictor variables: height of the turbine hub, diameter of the rotor, and the area swept by the turbine during a rotation.
+
+### **Height of Hub**
+
+First, we are going to test the relationship between the height of the turbine hub and the overall turbine capacity by making a bivariate graph of Turbine Capacity vs. Height of Hub. From this graph we can see that there is a positive relationship between the two variables. We can also calculate the correlation coefficient to be `r round(cor(turbines$Turbine.Hub_Height, turbines$Turbine.Capacity),2)` which is relatively close to 1, proving that there is a decently strong correlation between the height of the turbine hub and the turbine's capacity.
+
+```{r, echo=FALSE}
+ggplot(turbines) + geom_point(aes(x=Turbine.Hub_Height,y=Turbine.Capacity), color='deepskyblue4')  + labs(title='Turbine Capacity vs. Height of Hub',x='Height of Hub (m)',y='Turbine Capacity (KW)')
+```
+
+### **Diameter of Rotor**
+
+Next, we are going to measure the relationship between the diameter of the turbine's rotor and the overall turbine capacity by making a bivariate graph of Turbine Capacity vs. Diameter of Rotor. From this graph we can also see that there is a decently strong positive relationship between the two variables. We can calculate the correlation coefficient to be `r round(cor(turbines$Turbine.Rotor_Diameter, turbines$Turbine.Capacity),2)` which is very close to 1, proving that there is a strong relationship between the diameter of the turbine's rotor and the turbine's capacity.
+
+```{r, echo=FALSE}
+ggplot(turbines) + geom_point(aes(x=Turbine.Rotor_Diameter,y=Turbine.Capacity), color='deepskyblue4')  + labs(title='Turbine Capacity vs. Diameter of Rotor',x='Diameter of Rotor (m)',y='Turbine Capacity (KW)')
+```
+
+### **Area Swept**
+
+Lastly, we want to investigate the relationship between the area swept by the turbine during one rotation and the overall turbine capacity by making a bivariate graph of Turbine Capacity vs. Area Swept. From the graph below we can again see that there is a strong positive relationship between the two variables. We can calculate the correlation coefficient to be `r round(cor(turbines$Turbine.Swept_Area, turbines$Turbine.Capacity),2)` which is very close to 1, again proving that a strong correlation exists between the area swept by the turbine during a rotation and the turbine's capacity.
+
+```{r, echo=FALSE}
+ggplot(turbines) + geom_point(aes(x=Turbine.Swept_Area,y=Turbine.Capacity), color='deepskyblue4')  + labs(title='Turbine Capacity vs. Area Swept',x=bquote('Area Swept'~(m^2)),y='Turbine Capacity (KW)')
+```
+
+# **Conclusion**
+
+### **General Findings**
+
+From investigating the relationships between the three predictor variables and outcome variable, we can make a couple general conclusions. First, turbine capacity has a relatively strong relationship with the height of the turbine, diameter of the rotor, and area swept during a rotation; as these predictor variables increased, the capacity of the turbine also increased at a relatively similar rate. These strong correlations were demonstrated by correlation coefficients close to 1. Turbine capacity had the weakest relationship with height of the turbine (with a correlation coefficient of 0.72), but strong correlations with rotor diameter and area swept which both showed correlation coefficients of 0.88. These strong, positive correlations make sense when considering the situation as larger turbines with extended rotor diameters and heights would generally be able to generate more power as they have the ability to capture more wind.
+
+### **Future Research**
+
+While the design and structure of the wind turbine itself are of extreme importance when analyzing utility-scale wind turbines, another factor that could hold serious weight is the wind itself. More research could be conducted where turbines of similar make are placed in locations with varying wind speeds, ranging from low wind speeds to more turbulent wind. This further research might provide more insight as to which factor has a greater impact on turbine capacity: the structure of the turbine itself or the conditions of the wind. Determining which factor has the greatest impact would allow for the creation of more productive utility-scale turbines given the location.
+
+#### **References**
+- [United States Wind Turbine Database (USGS)](https://www.sciencebase.gov/catalog/item/57bdfd8fe4b03fd6b7df5ff9)
+- [Wind Turbines CSV File - CORGIS Dataset Project](https://think.cs.vt.edu/corgis/csv/wind_turbines/)
